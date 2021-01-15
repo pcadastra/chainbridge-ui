@@ -35,20 +35,20 @@ export const chainbridgeConfig: ChainbridgeConfig = {
       chainId: 1,
       networkId: 5,
       name: "Ethereum - Goerli",
-      bridgeAddress: "0x0993CEE13a42301d2e050693806fe79E822d42fB",
-      erc20HandlerAddress: "0x68b6A17C5E4B08759ee7F2e092356c479C5Cc65d",
-      rpcUrl: "wss://goerli.infura.io/v3/1d29c13faa7f4d6d905131424b7fd75f",
+      bridgeAddress: "0xe1FE92AFe025E72aAd3Abb77a7122E20521B7790",
+      erc20HandlerAddress: "0xEc8FCcd366D0C1257d40d801B1dDDF375B35d002",
+      rpcUrl: "https://goerli.infura.io/v3/9a76dde18da0480b96fe5fc0caf20bb0",
       type: "Ethereum",
       blockExplorer: "https://goerli.etherscan.io/tx",
       nativeTokenSymbol: "ETH",
       tokens: [
         {
-          address: "0x6D16859DE8C9421E52c4F5A6003DAcA3B4f8e36B",
+          address: "0x2221A0E4e1127d2e6aC3aB3265E566f29B3A03Bd",
           name: "ERC20",
           symbol: "ERC20",
           imageUri: ETHIcon,
           resourceId:
-            "0x0000000000000000000000F1c1e7dfF8466f8A3887AB4a9d398727A700DF9305",
+            "0x00000000000000000000001161780b17ce1f53da7B4e80b898135B38D364B671",
         },
         {
           address: "0xc1BBE2Dc4E3b31E0d0f7F3A71754fA54C866D2B1",
@@ -56,7 +56,7 @@ export const chainbridgeConfig: ChainbridgeConfig = {
           symbol: "WAVAX",
           imageUri: ETHIcon,
           resourceId:
-            "0x0000000000000000000000ed52eCA444088D3892EdaEbb05Ccd012165545D305",
+            "0x0000000000000000000000161780b17ce1f53da25Be80b898135B38D364B671",
         },
       ],
     },
@@ -64,21 +64,21 @@ export const chainbridgeConfig: ChainbridgeConfig = {
       chainId: 2,
       networkId: 43113,
       name: "AVAX-C Chain",
-      bridgeAddress: "0xed52eCA444088D3892EdaEbb05Ccd012165545D3",
-      erc20HandlerAddress: "0xd4B2c7B6CB241848Ac38EA94F131263A820c462D",
-      rpcUrl: "wss://avalanche.altoros.com/ext/bc/C/ws",
+      bridgeAddress: "0xb91e995E53e12262Ba85b0390458D1dc29a7C71d",
+      erc20HandlerAddress: "0xb93885Af0b7071609c4d6bBdc130c2D243503Dc7",
+      rpcUrl: "https://api.avax-test.network/ext/bc/C/rpc",
       type: "Ethereum",
       blockExplorer: "https://cchain.explorer.avax-test.network/tx",
       nativeTokenSymbol: "AVAX",
       defaultGasPrice: 470,
       tokens: [
         {
-          address: "0x0888CbA37729e3b3196bE81171E45E3A8bAf157A",
+          address: "0x2F586C298fbf33cB2b521653Ac3446f1bB1bE0D9",
           name: "ERC20",
           symbol: "ERC20",
           imageUri: ETHIcon,
           resourceId:
-            "0x0000000000000000000000F1c1e7dfF8466f8A3887AB4a9d398727A700DF9305",
+            "0x00000000000000000000006847fCc3BA5848999fC3983D45464bF82A36584A01",
         },
         {
           address: "0x1D308089a2D1Ced3f1Ce36B1FcaF815b07217be3",
