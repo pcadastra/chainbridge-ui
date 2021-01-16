@@ -35,20 +35,21 @@ export const chainbridgeConfig: ChainbridgeConfig = {
       chainId: 1,
       networkId: 5,
       name: "Ethereum - Goerli",
-      bridgeAddress: "0xe1FE92AFe025E72aAd3Abb77a7122E20521B7790",
-      erc20HandlerAddress: "0xEc8FCcd366D0C1257d40d801B1dDDF375B35d002",
+      bridgeAddress: "0x3E20D1022AcD13068b8e13bdcA856673f30eb915",
+      erc20HandlerAddress: "0x18D0fBEa890a9d686662A3f69E0A4FDabaF05fC9",
       rpcUrl: "https://goerli.infura.io/v3/9a76dde18da0480b96fe5fc0caf20bb0",
       type: "Ethereum",
       blockExplorer: "https://goerli.etherscan.io/tx",
       nativeTokenSymbol: "ETH",
+      defaultGasPrice: 90,
       tokens: [
         {
-          address: "0x2221A0E4e1127d2e6aC3aB3265E566f29B3A03Bd",
+          address: "0x72119aB1e9130EFd5395fC6bB30C99C40629ECAc",
           name: "ERC20",
           symbol: "ERC20",
           imageUri: ETHIcon,
           resourceId:
-            "0x00000000000000000000001161780b17ce1f53da7B4e80b898135B38D364B671",
+            "0x00000000000000000000006847fCc3BA5848999fC3983D45464bF82A36584A01",
         },
         {
           address: "0xc1BBE2Dc4E3b31E0d0f7F3A71754fA54C866D2B1",
@@ -64,8 +65,8 @@ export const chainbridgeConfig: ChainbridgeConfig = {
       chainId: 2,
       networkId: 43113,
       name: "AVAX-C Chain",
-      bridgeAddress: "0xb91e995E53e12262Ba85b0390458D1dc29a7C71d",
-      erc20HandlerAddress: "0xb93885Af0b7071609c4d6bBdc130c2D243503Dc7",
+      bridgeAddress: "0xC0Ab8032943ac89D1824735bABEA34e7F4C95895",
+      erc20HandlerAddress: "0x29f8f120E354dD50b7a13886b7f6c787624e0C85",
       rpcUrl: "https://api.avax-test.network/ext/bc/C/rpc",
       type: "Ethereum",
       blockExplorer: "https://cchain.explorer.avax-test.network/tx",
@@ -73,7 +74,7 @@ export const chainbridgeConfig: ChainbridgeConfig = {
       defaultGasPrice: 470,
       tokens: [
         {
-          address: "0x2F586C298fbf33cB2b521653Ac3446f1bB1bE0D9",
+          address: "0xD25Ba943452C83A45906B2A6579950435B31D790",
           name: "ERC20",
           symbol: "ERC20",
           imageUri: ETHIcon,
