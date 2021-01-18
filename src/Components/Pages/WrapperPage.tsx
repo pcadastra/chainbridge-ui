@@ -7,14 +7,12 @@ import {
   Button,
   Typography,
   QuestionCircleSvg,
-  SelectInput,
 } from "@chainsafe/common-components";
 import { Form, Formik } from "formik";
 import clsx from "clsx";
 import { useWeb3 } from "@chainsafe/web3-context";
 import { useChainbridge } from "../../Contexts/ChainbridgeContext";
 import { object, string } from "yup";
-import { ReactComponent as ETHIcon } from "../../media/tokens/eth.svg";
 import { chainbridgeConfig, TokenConfig } from "../../chainbridgeConfig";
 import PreflightModalWrap from "../../Modules/PreflightModalWrap";
 import WrapActiveModal from "../../Modules/WrapActiveModal";
@@ -23,30 +21,23 @@ import { forwardTo } from "../../Utils/History";
 import { ROUTE_LINKS } from "../Routes";
 import { BigNumber, utils } from "ethers";
 import SimpleTokenInput from "../Custom/SimpleTokenInput";
-import { pageRootStylesBase, connectMetaMaskButton } from "./styles";
+import TokenSelectInput from "../Custom/TokenSelectInput";
 
 const useStyles = makeStyles(({ constants, palette }: ITheme) =>
   createStyles({
     root: {
-      minHeight: constants.generalUnit * 69,
-      padding: constants.generalUnit * 6,
-      overflow: "hidden",
-      position: "relative",
-      ...pageRootStylesBase,
+      ...(constants.pageRootStyles as any),
     },
     walletArea: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      width: "100%",
+      ...(constants.walletArea as any),
     },
     blurb: {
       color: palette.common.black.main,
+      padding: "10px 0",
     },
     connectButton: {
-      margin: `${constants.generalUnit * 3}px 0 ${constants.generalUnit * 6}px`,
-      ...connectMetaMaskButton,
+      margin: `0px 0px 38px`,
+      ...(constants.largeButtonStyle as any),
     },
     connecting: {
       textAlign: "center",
@@ -65,15 +56,11 @@ const useStyles = makeStyles(({ constants, palette }: ITheme) =>
     changeButton: {
       cursor: "pointer",
     },
+    homeNetworkTitle: {
+      ...(constants.headerTitleStyle as any),
+    },
     networkName: {
-      padding: `${constants.generalUnit * 2}px ${
-        constants.generalUnit * 1.5
-      }px`,
-      border: `1px solid ${palette.additional["gray"][6]}`,
-      borderRadius: 2,
-      color: palette.additional["gray"][9],
-      marginTop: constants.generalUnit,
-      marginBottom: constants.generalUnit * 3,
+      ...(constants.networkNameStyle as any),
     },
     formArea: {
       "&.disabled": {
@@ -81,18 +68,12 @@ const useStyles = makeStyles(({ constants, palette }: ITheme) =>
       },
     },
     currencySection: {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "flex-end",
-      margin: `${constants.generalUnit * 3}px 0`,
+      ...(constants.currencySection as any),
+      justifyContent: "space-evenly",
+      maxWidth: "100%",
     },
     tokenInputArea: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "flex-end",
-      justifyContent: "space-around",
-      paddingRight: constants.generalUnit,
+      ...(constants.tokenInputArea as any),
     },
     tokenInput: {
       margin: 0,
@@ -109,21 +90,7 @@ const useStyles = makeStyles(({ constants, palette }: ITheme) =>
       },
     },
     maxButton: {
-      height: 32,
-      borderBottomLeftRadius: 0,
-      borderTopLeftRadius: 0,
-      left: -1,
-      color: palette.additional["gray"][8],
-      backgroundColor: palette.additional["gray"][3],
-      borderColor: palette.additional["gray"][6],
-      "&:hover": {
-        borderColor: palette.additional["gray"][6],
-        backgroundColor: palette.additional["gray"][7],
-        color: palette.common.white.main,
-      },
-      "&:focus": {
-        borderColor: palette.additional["gray"][6],
-      },
+      ...(constants.maxButton as any),
     },
     tokenIndicator: {
       width: 120,
@@ -194,13 +161,12 @@ const useStyles = makeStyles(({ constants, palette }: ITheme) =>
       justifyContent: "center",
     },
     submitButton: {
-      borderRadius: 30,
-      fontWeight: 600,
-      backgroundColor: palette.additional["submitButton"][1],
-      border: "none",
-      maxWidth: 300,
-      height: 60,
-      fontSize: 20,
+      backgroundColor: "#E84142",
+      margin: `0px 0px 38px`,
+      ...(constants.largeButtonStyle as any),
+    },
+    currencySelector: {
+      ...(constants.currencySelector as any),
     },
   })
 );
@@ -227,6 +193,7 @@ const MainPage = () => {
     wrapTokenConfig,
     wrapToken,
     unwrapToken,
+    destinationChain,
   } = useChainbridge();
   const [aboutOpen, setAboutOpen] = useState<boolean>(false);
   const [walletConnecting, setWalletConnecting] = useState(false);
@@ -235,6 +202,7 @@ const MainPage = () => {
   const [preflightDetails, setPreflightDetails] = useState<PreflightDetails>({
     tokenAmount: 0,
   });
+
   const [action, setAction] = useState<"wrap" | "unwrap">("wrap");
 
   const [txDetails, setTxDetails] = useState<
@@ -350,6 +318,36 @@ const MainPage = () => {
       .required("Please set a value"),
   });
 
+  const options = [
+    {
+      imageUri: wrapTokenConfig?.imageUri,
+      symbol: "AVAX",
+      label: "AVAX",
+      value: "wrap",
+    },
+    {
+      imageUri: wrapTokenConfig?.imageUri,
+      symbol: wrapTokenConfig?.symbol || "wETH",
+      label: wrapTokenConfig?.symbol || "wETH",
+      value: "unwrap",
+    },
+  ];
+
+  const tokensForSelector = {
+    [options[0].value]: {
+      ...options[0],
+      get balance() {
+        return ethBalance ? ethBalance.toFixed(2) : 0.0;
+      },
+    },
+    [options[1].value]: {
+      ...options[1],
+      get balance() {
+        return tokens[wrapTokenConfig?.address || "0x"].balance;
+      },
+    },
+  };
+
   return (
     <article className={classes.root}>
       <div className={classes.walletArea}>
@@ -381,7 +379,9 @@ const MainPage = () => {
         ) : (
           <section className={classes.connected}>
             <div>
-              <Typography variant="body1">Home network</Typography>
+              <Typography className={classes.homeNetworkTitle} variant="body1">
+                Home network
+              </Typography>
               <Typography
                 className={classes.changeButton}
                 variant="body1"
@@ -419,60 +419,31 @@ const MainPage = () => {
           })}
         >
           <section className={classes.currencySection}>
-            <section>
-              <div
-                className={clsx(classes.tokenInputArea, classes.generalInput)}
-              >
-                <SimpleTokenInput
-                  classNames={{
-                    input: clsx(classes.tokenInput, classes.generalInput),
-                    button: classes.maxButton,
-                  }}
-                  name="tokenAmount"
-                  label="Amount"
-                  max={
-                    action === "wrap"
-                      ? ethBalance
-                      : tokens[wrapTokenConfig?.address || "0x"]?.balance
-                  }
-                />
-              </div>
-            </section>
-            <section className={classes.tokenIndicator}>
-              <Typography component="p">
-                Balance:{" "}
-                {action === "wrap"
-                  ? ethBalance
-                    ? ethBalance.toFixed(2)
-                    : 0.0
-                  : tokens[wrapTokenConfig?.address || "0x"].balance}
-              </Typography>
-              <SelectInput
-                options={[
-                  {
-                    label: (
-                      <div className={classes.tokenItem}>
-                        <ETHIcon />
-                        <span>ETH</span>
-                      </div>
-                    ),
-                    value: "wrap",
-                  },
-                  {
-                    label: (
-                      <div className={classes.tokenItem}>
-                        <img
-                          src={wrapTokenConfig?.imageUri}
-                          alt={wrapTokenConfig?.symbol}
-                        />
-                        <span>{wrapTokenConfig?.symbol || "wETH"}</span>
-                      </div>
-                    ),
-                    value: "unwrap",
-                  },
-                ]}
-                onChange={(val) => setAction(val)}
-                value={action}
+            <div className={clsx(classes.tokenInputArea, classes.generalInput)}>
+              <SimpleTokenInput
+                name="tokenAmount"
+                label="Amount"
+                max={tokensForSelector[action].balance as number}
+              />
+            </div>
+
+            <section className={classes.currencySelector}>
+              <TokenSelectInput
+                tokens={tokensForSelector as any}
+                name="token"
+                value={options[0]}
+                disabled={!destinationChain}
+                label={`Balance: `}
+                className={classes.generalInput}
+                sync={(action) => setAction(action as any)}
+                options={
+                  options.map((t) => ({
+                    value: t.value,
+                    icon: t.imageUri,
+                    alt: t.symbol,
+                    label: t.symbol || "Unknown",
+                  })) || []
+                }
               />
             </section>
           </section>
